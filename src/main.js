@@ -3,6 +3,9 @@ import App from './App.vue'
 import router from './router/index'
 import settings from './settings'
 
+// 引入初始化 CSS 代码
+import "../static/css/reset.min.css";
+
 Vue.config.productionTip = false
 Vue.prototype.$settings = settings;
 

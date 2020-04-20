@@ -1,14 +1,25 @@
 <template>
   <div id="home">
-    校园二手交易平台首页
+    <Header/>
+    <Banner/>
+    <Main/>
+    <Footer/>
   </div>
 </template>
 
 <script>
+import Header from './common/Header'
+import Banner from './common/Banner'
+import Main from './common/Main'
+import Footer from './common/Footer'
 
 export default {
   name: 'Home',
   components: {
+    Header,
+    Banner,
+    Main,
+    Footer
   },
   data(){
     return {}
@@ -16,6 +27,6 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 
 </style>
