@@ -63,14 +63,14 @@ export default {
             // 记住登录
             sessionStorage.clear();
             localStorage.token = token;
-            localStorage.id = id;
-            localStorage.username = username;
+            localStorage.user_id = id;
+            localStorage.user_name = username;
           } else {
             // 未记住登录
             localStorage.clear();
             sessionStorage.token = token;
-            sessionStorage.id = id;
-            sessionStorage.username = username;
+            sessionStorage.user_id = id;
+            sessionStorage.user_name = username;
           }
           // 页面跳转到上一个页面，也可以使用 this.$router.push('/') 回到首页
           // this.$router.go(-1); // 有这个需求

@@ -30,14 +30,14 @@
                     <template slot="title">
                       <router-link to>
                         <img src="@/assets/images/default.png" class="avator" alt />
-                        <span>家乐同学</span>
+                        <span>{{user_name}}</span>
                       </router-link>
                     </template>
                     <el-menu-item index="2-1">个人中心</el-menu-item>
                     <el-menu-item index="2-2">我的订单</el-menu-item>
                     <el-menu-item index="2-3">发布物品</el-menu-item>
                     <el-menu-item index="2-4">我的收藏</el-menu-item>
-                    <el-menu-item index="2-5">退出登录</el-menu-item>
+                    <el-menu-item index="2-5"><span @click="logout">退出登录</span></el-menu-item>
                   </el-submenu>
                 </el-menu>
               </el-col>
@@ -72,7 +72,9 @@ export default {
   data() {
     return {
       // 设置一个登录标识，表示是否登录
-      token: false,
+      token: sessionStorage.token || localStorage.token,
+      user_name: sessionStorage.user_name || localStorage.user_name,
+      user_id: sessionStorage.user_id || localStorage.user_id,
       activeIndex: "1",
       searchValue: ""
     };
@@ -80,6 +82,19 @@ export default {
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
+    },
+    logout(){
+      let arr = ['token','user_id','user_name'];
+      arr.forEach(item => {
+        this[item] = false;
+        console.log(this[item]);
+        sessionStorage.removeItem(item);
+        localStorage.removeItem(item);
+
+        this.$alert('退出登录成功','校园易物',{
+          confirmButtinText: '确定'
+        })
+      })
     }
   }
 };
@@ -118,10 +133,10 @@ $fontColor: #2d8cf0;
     color: $fontColor;
   }
 }
-.login-bar .avator{
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    margin-right: 15px;
+.login-bar .avator {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 15px;
 }
 </style>
