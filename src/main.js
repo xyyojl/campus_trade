@@ -5,6 +5,10 @@ import settings from './settings'
 
 // 引入初始化 CSS 代码
 import "../static/css/reset.min.css";
+// 导入 axios
+import axios from 'axios';
+axios.defaults.withCredentials = true;
+Vue.prototype.$axios = axios; // 把对象挂载 vue 中
 
 Vue.config.productionTip = false
 Vue.prototype.$settings = settings;
