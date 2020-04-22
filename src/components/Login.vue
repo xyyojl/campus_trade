@@ -17,9 +17,9 @@
           <p>忘记密码</p>
         </div>
         <button class="login_btn" @click="handleLogin">登录</button>
-        <p class="go_login">
+        <p class="go_register">
           没有账号
-          <span>立即注册</span>
+          <router-link to="/register">立即注册</router-link>
         </p>
       </div>
       <div class="inp" v-show="login_type==1">
@@ -27,9 +27,9 @@
         <input v-model="code" type="text" class="code" placeholder="短信验证码" />
         <button id="get_code" class="get_code">获取验证码</button>
         <button class="login_btn">登录</button>
-        <p class="go_login">
+        <p class="go_register">
           没有账号
-          <span>立即注册</span>
+          <router-link to="/register">立即注册</router-link>
         </p>
       </div>
     </div>
@@ -81,7 +81,14 @@ export default {
           }
           // 页面跳转到上一个页面，也可以使用 this.$router.push('/') 回到首页
           // this.$router.go(-1); // 有这个需求
-          this.$router.push("/");
+          // this.$router.push("/");
+          // 登录后跳转
+          let url = this.$route.query.backUrl; // 获取跳转的url
+          if (url) {
+            this.$router.push({ path: url }); // 跳转到来的 页面
+          } else {
+            this.$router.push({ name: "Home" }); // 没有跳转的url 就登录后跳转首页
+          }
         })
         .catch(error => {
           console.log(error);
@@ -188,14 +195,14 @@ export default {
     border: none;
     cursor: pointer;
   }
-  .inp .go_login {
+  .inp .go_register {
     text-align: center;
     font-size: 14px;
     color: #9b9b9b;
     letter-spacing: 0.26px;
     padding-top: 20px;
   }
-  .inp .go_login span {
+  .inp .go_register span {
     color: #84cc39;
     cursor: pointer;
   }

@@ -87,7 +87,6 @@ export default {
       let arr = ['token','user_id','user_name'];
       arr.forEach(item => {
         this[item] = false;
-        console.log(this[item]);
         sessionStorage.removeItem(item);
         localStorage.removeItem(item);
 
