@@ -50,6 +50,13 @@ export default {
   },
   methods: {
     handleLogin() {
+      if (!this.username || !this.password) {
+        this.$message({
+          message: "请填写完整信息",
+          type: "warning"
+        });
+        return;
+      }
       this.$axios
         .post(`${this.$settings.Host}/users/login/`, {
           username: this.username,
@@ -58,7 +65,7 @@ export default {
         .then(res => {
           console.log(res.data);
           // 使用浏览器本地存储保存token 解构赋值
-          let {token, id, username} = res.data;
+          let { token, id, username } = res.data;
           if (this.remember) {
             // 记住登录
             sessionStorage.clear();

@@ -91,7 +91,7 @@ export default {
         sessionStorage.removeItem(item);
         localStorage.removeItem(item);
 
-        this.$alert('退出登录成功','校园易物',{
+        this.$alert('退出登录成功','校园二手交易平台',{
           confirmButtinText: '确定'
         })
       })
