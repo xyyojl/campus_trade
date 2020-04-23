@@ -79,6 +79,7 @@ export default {
             sessionStorage.user_id = id;
             sessionStorage.user_name = username;
           }
+          
           // 页面跳转到上一个页面，也可以使用 this.$router.push('/') 回到首页
           // this.$router.go(-1); // 有这个需求
           // this.$router.push("/");
@@ -92,6 +93,11 @@ export default {
         })
         .catch(error => {
           console.log(error);
+          // 根据后台返回的信息，提示用户，这里不完善
+          this.$message({
+            message: "请检查一下你填写账号或密码是否正确",
+            type: "warning"
+          });
         });
     }
   }
