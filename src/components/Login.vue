@@ -65,7 +65,7 @@ export default {
         .then(res => {
           console.log(res.data);
           // 使用浏览器本地存储保存token 解构赋值
-          let { token, id, username } = res.data;
+          let { token, id, username } = res.data.data;
           if (this.remember) {
             // 记住登录
             sessionStorage.clear();
