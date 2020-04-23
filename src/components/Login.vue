@@ -79,7 +79,7 @@ export default {
             sessionStorage.user_id = id;
             sessionStorage.user_name = username;
           }
-          
+
           // 页面跳转到上一个页面，也可以使用 this.$router.push('/') 回到首页
           // this.$router.go(-1); // 有这个需求
           // this.$router.push("/");

@@ -134,7 +134,7 @@ export default {
               if(url){
                 _this.$router.push({path:url})  // 跳转到来的 页面
               }else {
-                _this.$router.push({name:'/'})  // 没有跳转的url 就登录后跳转首页
+                _this.$router.push({name:'Home'})  // 没有跳转的url 就登录后跳转首页
               }
             }
           });
