@@ -1,9 +1,9 @@
 <template>
   <div class="banner-container clearfix">
-    <ul class="menuContent">
-      <li class="item" v-for="tag in taglist" :key="tag.id">
+    <ul class="menuContent" >
+      <li class="item" v-for="(tag,index) in taglist" :key="tag.id" @mouseenter="enter(index)" @mouseleave="leave()">
         <a href="javascript:void(0)">
-          <span class="product group">{{tag.value}}</span>
+          <span class="product group">{{tag.cate_name}}</span>
           <i class="el-icon-caret-right"></i>
         </a>
       </li>
@@ -15,14 +15,19 @@
         </el-carousel-item>
       </el-carousel>
     </div>
-    <div class="sub-menu">
+    <div :class="['sub-menu',{ active: isActive }]" ref="subMenu" 
+      v-for="(subitem,index) in subitemList" 
+      :key="index" 
+      v-show="currentIndex === index"
+      @mouseenter="enter(index)"
+      @mouseleave="leave()">
       <div class="divider">
-        <span>数码产品</span>
+        <span>{{subitemTitle}}</span>
       </div>
       <ul class="sub-item clearfix">
-        <li class="item fl" v-for="item in subitemList" :key="item.id">
-          <img :src="item.imgUrl" alt />
-          <div>{{item.value}}</div>
+        <li class="item fl" v-for="item in subitem" :key="item.id">
+          <img :src="item.pic" alt />
+          <div>{{item.cate_name}}</div>
         </li>
       </ul>
     </div>
@@ -35,7 +40,7 @@ export default {
   data() {
     return {
       taglist: [
-        { id: 1, value: "数码产品" },
+       /*  { id: 1, value: "数码产品" },
         { id: 2, value: "书籍教材" },
         { id: 3, value: "衣鞋帽伞" },
         { id: 4, value: "代步工具" },
@@ -45,10 +50,10 @@ export default {
         { id: 8, value: "虚拟产品" },
         { id: 9, value: "手工设计" },
         { id: 10, value: "乐器" },
-        { id: 11, value: "其他" }
+        { id: 11, value: "其他" } */
       ],
       subitemList: [
-        {
+       /*  {
           iv: 1,
           value: "手机1",
           imgUrl:
@@ -95,14 +100,41 @@ export default {
           value: "手机8",
           imgUrl:
             "https://api.youzixy.com/public/uploads/attach/2019/07/16/5d2ca4f919c70.jpg"
-        }
+        } */
       ],
+      subitemTitle: '数码产品',
       bannerImg: [
         { id: 1, url: require("../../assets/images/banner1.jpg")},
         { id: 2, url: require("../../assets/images/banner2.png") },
         { id: 3, url: require("../../assets/images/banner1.jpg") }
-      ]
+      ],
+      isActive: false,
+      currentIndex: 0,
     };
+  },
+  created(){
+    this.getCategory();
+  },
+  methods: {
+    getCategory(){
+      // 获取物品的分类
+      this.$axios.get('/api/get_product_category.json')
+        .then(res => {
+          this.taglist = Object.assign(res.data.data);
+          this.taglist.forEach(item => {
+            this.subitemList.push(item.child);
+          })
+        })
+    },
+    enter(index){
+      this.currentIndex = index;
+      this.isActive = true;
+      this.subitemTitle = this.taglist[index].cate_name;
+    },
+    leave(){
+      this.isActive = false;
+      this.subitemTitle = '';
+    }
   }
 };
 </script>
@@ -190,8 +222,10 @@ $fontColor: #2d8cf0;
   z-index: 10;
   background-color: #fff;
   overflow-y: auto;
-  border: 1px solid red;
   display: none;
+}
+.sub-menu.active{
+  display: block;
 }
 .sub-menu .divider {
   position: relative;

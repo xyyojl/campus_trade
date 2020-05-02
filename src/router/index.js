@@ -27,6 +27,6 @@ export default new Router({
             name: 'Register',
             path: '/register',
             component: Register 
-        }
+        },
     ]
 })
