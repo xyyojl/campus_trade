@@ -14,9 +14,21 @@ export default {
 </script>
 
 <style>
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
 #app{
   width: 100vw;
   height: 100vh;
-  overflow-x:hidden
+  overflow-x:hidden;
+  background-color: #f8f8f9;
 }
 </style>
