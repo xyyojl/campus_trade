@@ -6,6 +6,7 @@ import Home from '../components/Home'
 import Login from '../components/Login'
 import Register from '../components/Register'
 import GoodDetail from '../components/GoodDetail'
+import UserInfo from '../components/UserInfo'
 
 Vue.use(Router);
 
@@ -33,6 +34,11 @@ export default new Router({
             name: 'GoodDetail',
             path: '/good_detail',
             component: GoodDetail 
+        },
+        {
+            name: 'UserInfo',
+            path: '/user_info',
+            component: UserInfo 
         },
     ]
 })
