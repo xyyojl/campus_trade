@@ -49,6 +49,28 @@
       </div>
       <div class="no-content" v-else>暂无订单</div>
     </div>
+    <div class="content-box" v-show="name === 'my_publish' ">
+      <h3 class="title">我的发布</h3>
+      <div class="order-box" v-if="value1">
+        <el-table :data="tableData1" border style="width: 100%;margin-left: 20px;margin-top: 10px;">
+          <el-table-column prop="imageUrl" label="图片">
+            <template slot-scope="scope">
+              <img :src="scope.row.imageUrl" alt style="width: 120px;" />
+            </template>
+          </el-table-column>
+          <el-table-column prop="status" label="状态"></el-table-column>
+          <el-table-column prop="price" label="价格"></el-table-column>
+          <el-table-column prop="date" label="日期"></el-table-column>
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+              <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class="no-content" v-else>暂无已发布物品</div>
+    </div>
   </div>
 </template>
 
@@ -73,11 +95,21 @@ export default {
       imageUrl: "https://api.youzixy.com/public/uploads/avatar/default3.png",
       disabled: true,
       value: true,
+      value1: false,
       tableData: [
         {
           imageUrl:
             "https://api.youzixy.com/public/uploads/attach/2020/01/09/5e167752ca073.jpg",
           status: "未发货",
+          price: "￥89.0",
+          date: "2020-02-02"
+        }
+      ],
+      tableData1: [
+        {
+          imageUrl:
+            "https://api.youzixy.com/public/uploads/attach/2020/01/09/5e167752ca073.jpg",
+          status: "未交易",
           price: "￥89.0",
           date: "2020-02-02"
         }
@@ -94,6 +126,9 @@ export default {
     save() {
       alert("正在处理中");
       this.disabled = true;
+    },
+    handleEdit(index, row) {
+      console.log(index, row);
     },
     handleDelete(index, row) {
       alert("删除");
