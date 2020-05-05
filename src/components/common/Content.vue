@@ -107,6 +107,42 @@
       <div class="order-box" v-if="false"></div>
       <div class="no-content" v-else>暂无收藏</div>
     </div>
+    <div class="content-box" v-show="name === 'cart' ">
+      <h3 class="title">购物清单</h3>
+      <div class="order-box" v-if="true">
+        <el-table
+          ref="multipleTable"
+          :data="cartData"
+          tooltip-effect="dark"
+          style="width: 100%"
+          @selection-change="selected"
+        >
+          >
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column prop="name" label="商品名称" width="120"></el-table-column>
+          <el-table-column prop="price" label="单价" width="120"></el-table-column>
+          <el-table-column prop="number" label="数量"></el-table-column>
+          <el-table-column prop="status" label="是否已交易"></el-table-column>
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <!-- <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button> -->
+              <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="total">
+          <el-button size="mini" type="danger">删除所选物品</el-button>
+          <div class="detail">
+            <span>
+              {{number}} 件商品总计（不含运费）:
+              <strong style="color: red;">￥{{moneyTotal}}</strong>
+            </span>
+            <el-button size="mini" type="primary" @click="save">去结算</el-button>
+          </div>
+        </div>
+      </div>
+      <div class="no-content" v-else>暂无收藏</div>
+    </div>
     <div class="content-box" v-show="name === 'password' " style="padding-left: 30px;">
       <el-form label-width="120px" :model="formLabelAlign">
         <el-form-item label="原密码">
@@ -234,7 +270,30 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      cartData: [
+        {
+          name: "小米",
+          price: "1099",
+          number: "1",
+          status: "未交易"
+        },
+        {
+          name: "华为",
+          price: "1999",
+          number: "1",
+          status: "未交易"
+        },
+        {
+          name: "锤子",
+          price: "899",
+          number: "1",
+          status: "未交易"
+        }
+      ],
+      number: 0,
+      moneyTotal: 0,
+      multipleSelection: []
     };
   },
   created() {
@@ -267,6 +326,10 @@ export default {
         this.options = Object.assign(res.data.data);
         console.log(this.options);
       }); */
+    },
+    handleSelectionChange() {},
+    selected(selection) {
+        console.log(selection);
     }
   }
 };
@@ -305,6 +368,17 @@ export default {
   }
 }
 
+.total {
+  display: flex;
+  width: 100%;
+  padding: 10px 20px;
+  background: #e6e6e6;
+  justify-content: space-between;
+  .detail span {
+    margin-right: 10px;
+    font-size: 14px;
+  }
+}
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
