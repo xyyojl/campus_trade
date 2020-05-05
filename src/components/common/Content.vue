@@ -4,7 +4,7 @@
       <el-form label-width="80px" :model="formLabelAlign" :disabled="disabled">
         <el-form-item label="头像">
           <el-upload
-            class="avatar-uploader"
+            class
             action="https://jsonplaceholder.typicode.com/posts/"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
@@ -71,6 +71,43 @@
       </div>
       <div class="no-content" v-else>暂无已发布物品</div>
     </div>
+    <div class="content-box" v-show="name === 'publish' " style="padding-left: 30px;">
+      <h3 class="title">发布物品</h3>
+      <div class="order-box">
+        <el-form label-width="80px" :model="formLabelAlign">
+          <el-form-item label="物品名称">
+            <el-input v-model="formLabelAlign.name"></el-input>
+          </el-form-item>
+          <el-form-item label="物品详情">
+            <el-input v-model="formLabelAlign.detail" type="textarea" style="width: 250px;"></el-input>
+          </el-form-item>
+          <el-form-item label="物品价格">
+            <el-input v-model="formLabelAlign.price"></el-input>
+          </el-form-item>
+          <el-form-item label="物品分类">
+            <el-cascader v-model="value" :options="options" @change="handleChange" clearable></el-cascader>
+          </el-form-item>
+          <el-form-item label="图片上传">
+            <el-upload
+              class="avatar-uploader"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+            >
+              <img v-if="imageUrl1" :src="imageUrl1" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
+        </el-form>
+        <el-button type="primary" style="margin-left: 80px;">提交</el-button>
+      </div>
+    </div>
+    <div class="content-box" v-show="name === 'collect' ">
+      <h3 class="title">我的收藏</h3>
+      <div class="order-box" v-if="false">
+      </div>
+      <div class="no-content" v-else>暂无收藏</div>
+    </div>
   </div>
 </template>
 
@@ -93,6 +130,7 @@ export default {
         address: ""
       },
       imageUrl: "https://api.youzixy.com/public/uploads/avatar/default3.png",
+      imageUrl1: "",
       disabled: true,
       value: true,
       value1: false,
@@ -113,8 +151,79 @@ export default {
           price: "￥89.0",
           date: "2020-02-02"
         }
+      ],
+      options: [
+        {
+          value: "shuma",
+          label: "数码产品",
+          children: [
+            {
+              value: "1",
+              label: "手机"
+            },
+            {
+              value: "2",
+              label: "平板"
+            },
+            {
+              value: "3",
+              label: "笔记本"
+            },
+            {
+              value: "4",
+              label: "台式机"
+            }
+          ]
+        },
+        {
+          value: "shuji",
+          label: "书籍教材",
+          children: [
+            {
+              value: "",
+              label: "教科书"
+            },
+            {
+              value: "",
+              label: "文学"
+            },
+            {
+              value: "",
+              label: "小说"
+            },
+            {
+              value: "",
+              label: "电子书"
+            }
+          ]
+        },
+        {
+          value: "yinxie",
+          label: "衣鞋帽伞",
+          children: [
+            {
+              value: "",
+              label: "裙子"
+            },
+            {
+              value: "",
+              label: "裤子"
+            },
+            {
+              value: "",
+              label: "衣服"
+            },
+            {
+              value: "",
+              label: "帽子"
+            }
+          ]
+        }
       ]
     };
+  },
+  created() {
+    this.getCategory();
   },
   methods: {
     handleAvatarSuccess(res, file) {
@@ -133,6 +242,16 @@ export default {
     handleDelete(index, row) {
       alert("删除");
       console.log(index, row);
+    },
+    handleChange(value) {
+      console.log(value);
+    },
+    getCategory() {
+      // 获取物品的分类
+      /* this.$axios.get("/api/get_product_category.json").then(res => {
+        this.options = Object.assign(res.data.data);
+        console.log(this.options);
+      }); */
     }
   }
 };
@@ -164,5 +283,34 @@ export default {
     color: #c5c8ce;
     font-size: 18px;
   }
+  .el-textarea__inner {
+    height: 52px;
+    min-height: 52px !important;
+    max-height: 115px;
+  }
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader .avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>
