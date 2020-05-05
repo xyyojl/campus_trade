@@ -329,7 +329,20 @@ export default {
     },
     handleSelectionChange() {},
     selected(selection) {
+        let arr = [];
+        selection.forEach(item => {
+            if(!arr.includes(item)){
+                arr.push(item);
+            }
+        })
         console.log(selection);
+        console.log(arr);
+        this.number = 0;
+        this.moneyTotal = 0;
+        arr.forEach(item => {
+            this.number += parseFloat(item.number);
+            this.moneyTotal += parseFloat(item.number) * item.price;
+        })
     }
   }
 };
