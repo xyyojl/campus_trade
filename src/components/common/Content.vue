@@ -104,9 +104,24 @@
     </div>
     <div class="content-box" v-show="name === 'collect' ">
       <h3 class="title">我的收藏</h3>
-      <div class="order-box" v-if="false">
-      </div>
+      <div class="order-box" v-if="false"></div>
       <div class="no-content" v-else>暂无收藏</div>
+    </div>
+    <div class="content-box" v-show="name === 'password' " style="padding-left: 30px;">
+      <el-form label-width="120px" :model="formLabelAlign">
+        <el-form-item label="原密码">
+          <el-input v-model="formLabelAlign.oldPassword" type="password"></el-input>
+        </el-form-item>
+        <el-form-item label="新的密码">
+          <el-input v-model="formLabelAlign.password1" type="password"></el-input>
+        </el-form-item>
+        <el-form-item label="确认新的密码">
+          <el-input v-model="formLabelAlign.passwrod2" type="password"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="save">保存</el-button>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
