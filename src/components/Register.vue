@@ -91,7 +91,8 @@ export default {
         !this.password ||
         !this.password2 ||
         !this.school ||
-        !this.mobile
+        !this.mobile ||
+        !this.sms
       ) {
         this.$message({
           message: "请填写完整信息",
