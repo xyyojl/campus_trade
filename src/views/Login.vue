@@ -207,7 +207,7 @@ export default {
   }
   & .login .title span.active {
     color: #4a4a4a;
-    border-bottom: 2px solid #84cc39;
+    border-bottom: 2px solid #409eff;
   }
   .inp {
     width: 100%;
@@ -259,7 +259,8 @@ export default {
   .login_btn {
     width: 100%;
     height: 45px;
-    background: #84cc39;
+    // background: #84cc39;
+    background: #409eff;
     border-radius: 5px;
     font-size: 16px;
     color: #fff;
