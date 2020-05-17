@@ -2,8 +2,8 @@
   <div class="login-box">
     <div class="login">
       <div class="title">
-        <span @click="login_type=0" class="active">密码登录</span>
-        <span @click="login_type=1">短信登录</span>
+        <span @click="login_type=0" :class="{active:login_type==0}">密码登录</span>
+        <span @click="login_type=1" :class="{active:login_type==1}">短信登录</span>
       </div>
       <div class="inp" v-if="login_type==0">
         <input v-model="username" type="text" placeholder="用户名 / 手机号码" class="user" />
@@ -14,7 +14,7 @@
             <input type="checkbox" class="no" name="a" v-model="remember" />
             <span>记住密码</span>
           </p>
-          <p>忘记密码</p>
+          <p @click="forget">忘记密码</p>
         </div>
         <button class="login_btn" @click="handleLogin">登录</button>
         <p class="go_register">
@@ -24,8 +24,10 @@
       </div>
       <div class="inp" v-show="login_type==1">
         <input v-model="username" type="text" placeholder="手机号码" class="user" />
-        <input v-model="code" type="text" class="code" placeholder="短信验证码" />
-        <button id="get_code" class="get_code">获取验证码</button>
+        <div class="sms-box">
+          <input v-model="sms" type="text" placeholder="输入验证码" class="sms" />
+          <div class="sms-btn" @click="smsHandle">{{sms_text}}</div>
+        </div>
         <button class="login_btn">登录</button>
         <p class="go_register">
           没有账号
@@ -45,7 +47,11 @@ export default {
       username: "",
       password: "",
       code: "",
-      remember: false // 记住密码
+      remember: false, // 记住密码
+      sms: "",
+      is_send: false, // 是否已经发送短信的状态
+      send_intervel: 60, // 发送短信的间隔
+      sms_text: "点击发送短信" // 发送短信的提示
     };
   },
   methods: {
@@ -99,6 +105,55 @@ export default {
             type: "warning"
           });
         });
+    },
+    smsHandle() {
+      // 判断是否填写了手机
+      if (!/^1[3456789]\d{9}$/.test(this.mobile)) {
+        this.$alert("手机号码格式有误!", "警告");
+        return false;
+      }
+      // 判断是否在 60s 内有发送过短信，如果有则，不能点击发送
+      if (this.is_send) {
+        this.$alert("60s内不能频繁发送短信!", "警告");
+        return false;
+      }
+
+      let _this = this;
+
+      _this.$axios
+        .get(_this.$settings.Host + `/verification/sms/${_this.mobile}/`)
+        .then(response => {
+          let data = response.data;
+          if (data.result == "-1") {
+            _this.$alert("发送短信失败!", "错误");
+          } else {
+            _this.is_send = true;
+            _this.$alert("发送短信成功了!", "成功", {
+              callback() {
+                let num = _this.send_intervel;
+                let timer = setInterval(() => {
+                  if (num < 1) {
+                    clearInterval(timer);
+                    _this.sms_text = "点击发送短信";
+                    _this.is_send = false;
+                  } else {
+                    num--;
+                    _this.sms_text = num + "后可继续点击发送";
+                  }
+                }, 1000);
+              }
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error.response);
+        });
+    },
+    forget() {
+      this.$message({
+        message: "正在施工中，敬请期待",
+        type: "warning"
+      });
     }
   }
 };
@@ -148,7 +203,8 @@ export default {
   }
   .inp input.user,
   .inp input.pwd,
-  .inp input.code {
+  .inp input.code,
+  .inp input.sms {
     outline: 0;
     width: 100%;
     height: 45px;
@@ -219,6 +275,23 @@ export default {
     width: 130px;
     height: 45px;
     margin-left: 28px;
+  }
+  .inp .sms-box {
+    position: relative;
+  }
+  .inp .sms-btn {
+    font-size: 14px;
+    color: #409eff;
+    letter-spacing: 0.26px;
+    position: absolute;
+    right: 16px;
+    top: 13px;
+    cursor: pointer;
+    overflow: hidden;
+    background: #fff;
+    border-left: 1px solid #484848;
+    padding-left: 16px;
+    padding-bottom: 4px;
   }
 }
 </style>
