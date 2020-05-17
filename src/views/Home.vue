@@ -1,25 +1,19 @@
 <template>
   <div id="home">
-    <Header/>
     <Banner/>
     <Main/>
-    <Footer/>
   </div>
 </template>
 
 <script>
-import Header from './common/Header'
-import Banner from './common/Banner'
-import Main from './common/Main'
-import Footer from './common/Footer'
+import Banner from '@/components/common/Banner'
+import Main from '@/components/common/Main'
 
 export default {
   name: 'Home',
   components: {
-    Header,
     Banner,
-    Main,
-    Footer
+    Main
   },
   data(){
     return {}

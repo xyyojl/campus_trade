@@ -28,7 +28,7 @@
           <input v-model="sms" type="text" placeholder="输入验证码" class="sms" />
           <div class="sms-btn" @click="smsHandle">{{sms_text}}</div>
         </div>
-        <button class="login_btn">登录</button>
+        <button class="login_btn" @click="handleSmsLogin">登录</button>
         <p class="go_register">
           没有账号
           <router-link to="/register">立即注册</router-link>
@@ -70,8 +70,10 @@ export default {
         })
         .then(res => {
           console.log(res.data);
-          // 使用浏览器本地存储保存token 解构赋值
+          // 使用浏览器本地存储保存 token 解构赋值
           let { token, id, username } = res.data.data;
+          // 登陆成功
+          this.$store.dispatch('setToken', token)
           if (this.remember) {
             // 记住登录
             sessionStorage.clear();
@@ -86,16 +88,17 @@ export default {
             sessionStorage.user_name = username;
           }
 
-          // 页面跳转到上一个页面，也可以使用 this.$router.push('/') 回到首页
-          // this.$router.go(-1); // 有这个需求
+          // 跳转到首页
           // this.$router.push("/");
-          // 登录后跳转
-          let url = this.$route.query.backUrl; // 获取跳转的url
+          this.$router.push({ name: "Home" });
+
+          // bug: 登录后跳转
+          /* let url = this.$route.query.backUrl; // 获取跳转的url
           if (url) {
             this.$router.push({ path: url }); // 跳转到来的 页面
           } else {
             this.$router.push({ name: "Home" }); // 没有跳转的url 就登录后跳转首页
-          }
+          } */
         })
         .catch(error => {
           console.log(error);
@@ -154,6 +157,15 @@ export default {
         message: "正在施工中，敬请期待",
         type: "warning"
       });
+    },
+    handleSmsLogin(){
+      if (!this.username || !this.sms) {
+        this.$message({
+          message: "请填写完整信息",
+          type: "warning"
+        });
+        return;
+      }
     }
   }
 };

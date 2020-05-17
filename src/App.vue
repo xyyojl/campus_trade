@@ -1,14 +1,22 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <!-- <Header></Header> -->
+    <router-view class="header" name="header"></router-view>
+    <router-view class="content"></router-view>
+    <router-view class="footer" name="footer"></router-view>
+    <!-- <Footer></Footer> -->
   </div>
 </template>
 
 <script>
+// import Header from './components/common/Header'
+// import Footer from './components/common/Footer'
 
 export default {
   name: 'App',
   components: {
+    // Header,
+    // Footer
   }
 }
 </script>
@@ -30,5 +38,9 @@ export default {
   height: 100vh;
   overflow-x:hidden;
   background-color: #f8f8f9;
+}
+.content{
+  min-height: 800px;
+  padding: 30px 0;
 }
 </style>

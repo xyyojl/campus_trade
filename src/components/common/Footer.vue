@@ -27,7 +27,6 @@ export default {
 <style lang="scss" scoped>
 .footer {
   background-color: #282c36;
-  margin-top: 35px;
   display: flex;
   flex-direction: column;
   color: #999;

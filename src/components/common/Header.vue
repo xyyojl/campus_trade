@@ -37,7 +37,9 @@
                     <el-menu-item index="2-2">我的订单</el-menu-item>
                     <el-menu-item index="2-3">发布物品</el-menu-item>
                     <el-menu-item index="2-4">我的收藏</el-menu-item>
-                    <el-menu-item index="2-5"><span @click="logout">退出登录</span></el-menu-item>
+                    <el-menu-item index="2-5">
+                      <span @click="logout">退出登录</span>
+                    </el-menu-item>
                   </el-submenu>
                 </el-menu>
               </el-col>
@@ -72,7 +74,8 @@ export default {
   data() {
     return {
       // 设置一个登录标识，表示是否登录
-      token: sessionStorage.token || localStorage.token,
+      // token: sessionStorage.token || localStorage.token,
+      token: this.$store.state.token,
       user_name: sessionStorage.user_name || localStorage.user_name,
       user_id: sessionStorage.user_id || localStorage.user_id,
       activeIndex: "1",
@@ -80,11 +83,8 @@ export default {
     };
   },
   methods: {
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    logout(){
-      let arr = ['token','user_id','user_name'];
+    logout() {
+      /* let arr = ['token','user_id','user_name'];
       arr.forEach(item => {
         this[item] = false;
         sessionStorage.removeItem(item);
@@ -93,7 +93,33 @@ export default {
         this.$alert('退出登录成功','校园二手交易平台',{
           confirmButtinText: '确定'
         })
+      }) */
+      let arr = ["token", "user_id", "user_name"];
+      this.$confirm("确定要退出吗，亲？", "退出确认", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
       })
+        .then(() => {
+          // localStorage.removeItem("Token");
+          arr.forEach(item => {
+            this[item] = false;
+            sessionStorage.removeItem(item);
+            localStorage.removeItem(item);
+          });
+          this.$store.dispatch("setToken", null);
+          this.$router.push("/login");
+          this.$message({
+            type: "success",
+            message: "退出成功！"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消退出"
+          });
+        });
     }
   }
 };
@@ -122,10 +148,6 @@ $fontColor: #2d8cf0;
     border-bottom: 2px solid $fontColor;
   }
 }
-/* .cart-ico a:hover {
-  color: $fontColor;
-  border-bottom: 2px solid $fontColor;
-} */
 .login-bar a {
   color: $defaultColor;
   &:hover {
